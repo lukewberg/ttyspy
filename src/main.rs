@@ -1,8 +1,9 @@
 use std::io;
 use std::process::{Command, Stdio};
 
+use clap::Parser;
 use libc;
-use ttyspy::cmd_args::{self, Cli};
+use ttyspy::cli::Cli;
 
 fn main() {
     // println!("Hello, world!");
@@ -11,10 +12,12 @@ fn main() {
     let stderr = io::stderr();
     let stdout = io::stdout();
     let aws = std::env::var("");
-    if let Some(args) = Cli::process() {
-        let mut command = Command::new(args.program);
-        command.args(args.program_args).status().expect("Failed to spawn command process!");
-    }
+    let args = Cli::parse();
+    let mut command = Command::new(args.program);
+    command
+        // .args(args.program_args)
+        .status()
+        .expect("Failed to spawn command process!");
     // Command::new(program);
     // stdin.lock();
     // stderr.lock();
